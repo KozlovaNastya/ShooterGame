@@ -1,0 +1,59 @@
+# =============== #
+# Unity специфичное #
+# =============== #
+
+# Временные файлы
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# URP настройки и графические конфиги
+Assets/Settings/
+Assets/UniversalRenderPipelineGlobalSettings.*
+Assets/DefaultVolumeProfile.*
+
+# =============== #
+# ProjectSettings #
+# =============== #
+ProjectSettings/*
+!ProjectSettings/ProjectVersion.txt
+!ProjectSettings/PackageManagerSettings.asset
+!ProjectSettings/SceneTemplateSettings.json
+
+# =============== #
+# Визуальные редакторы #
+# =============== #
+.vs/
+.vscode/
+.idea/
+*.sln
+*.csproj
+*.unityproj
+*.suo
+*.user
+*.userprefs
+.vsconfig
+
+# =============== #
+# Пакеты #
+# =============== #
+Packages/packages-lock.json
+
+# =============== #
+# Остальное #
+# =============== #
+.DS_Store
+Thumbs.db
+*.orig
+*.log
+
+# =============== #
+# Meta файлы для игнорируемых ассетов #
+# =============== #
+# Игнорируем .meta файлы для игнорируемых .asset файлов
+Assets/*.asset.meta
+Assets/Settings.meta
