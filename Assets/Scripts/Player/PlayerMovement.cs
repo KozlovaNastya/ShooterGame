@@ -19,7 +19,11 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         if(rb == null) rb = GetComponent<Rigidbody2D>();
-        if(animator == null) animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        if (animator == null) animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -36,26 +40,18 @@ public class PlayerMovement : MonoBehaviour
             movement = movement.normalized;
         }
 
-        UpdateAnimations();
+        animator.SetFloat("Speed", movement.sqrMagnitude);
+
+        if (movement != Vector2.zero)
+        {
+            animator.SetFloat("Horizontal", movement.x);
+            animator.SetFloat("Vertical", movement.y);
+        }
     }
 
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
-    }
-
-    private void UpdateAnimations()
-    {
-        if (animator == null) return;
-
-        bool isMoving = movement.magnitude > 0.1f;
-        animator.SetBool(IsMoving, isMoving);
-
-        if (isMoving)
-        {
-            animator.SetFloat(MoveX, movement.x);
-            animator.SetFloat(MoveY, movement.y);
-        }
     }
 
     public Vector2 GetMovementDirection() => movement;
