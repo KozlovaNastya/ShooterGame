@@ -11,7 +11,7 @@ public class EnemyBehavior : MonoBehaviour
 
     [Header("Components")]
     private Rigidbody2D rb;
-    
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -38,7 +38,7 @@ public class EnemyBehavior : MonoBehaviour
         }
         else
         {
-            if(rb != null)
+            if (rb != null)
             {
                 rb.linearVelocity = Vector2.zero;
             }
@@ -47,9 +47,19 @@ public class EnemyBehavior : MonoBehaviour
 
     void MoveTowardsPlayer(Vector2 direction)
     {
-        if(rb!= null)
+        if (rb != null)
         {
             rb.linearVelocity = direction * moveSpeed;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            collision.GetComponent<PlayerHealth>().TakeDamage();
+
+            Destroy(gameObject);
         }
     }
 }
