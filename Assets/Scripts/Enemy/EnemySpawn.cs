@@ -5,11 +5,15 @@ public class SimpleEnemySpawner : MonoBehaviour
 {
     [Header("Basic Settings")]
     public GameObject enemyPrefab;
-    public float spawnRate = 2f;    // Раз в 2 секунды
+    public float spawnRate = 2f; 
     public int maxEnemies = 5;
 
     [Header("Spawn Zone")]
-    public float spawnRadius = 8f;  // Радиус от центра
+    public float minX, maxX;
+    public float minY, maxY;
+
+    [Header("Safe Zone")]
+    public float safeDistance = 3f;
 
     private Transform player;
 
@@ -48,19 +52,31 @@ public class SimpleEnemySpawner : MonoBehaviour
             return;
         }
 
-        // Случайная позиция по кругу
-        Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
-        Vector3 spawnPos = transform.position + new Vector3(randomCircle.x, randomCircle.y, 0);
+        Vector3 spawnPos;
+        int attempts = 0;
 
-        // Создаем врага
-        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-        Debug.Log($"Spawned enemy at {spawnPos}");
+        do
+        {
+            float randomX = Random.Range(minX, maxX);
+            float randomY = Random.Range(minY, maxY);
+            spawnPos = new Vector3(randomX, randomY, 0);
+            attempts++;
+
+        } while (Vector3.Distance(spawnPos, player.position) < safeDistance && attempts < 10);
+
+        if (attempts < 10 || player == null)
+        {
+            Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        }
     }
 
-    // Для визуализации в редакторе
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, spawnRadius);
+        if (player != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(player.position, safeDistance);
+        }
     }
+
 }
