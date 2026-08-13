@@ -50,6 +50,7 @@ Packages/packages-lock.json
 Thumbs.db
 *.orig
 *.log
+screenshots/
 
 # =============== #
 # Meta файлы для игнорируемых ассетов #
