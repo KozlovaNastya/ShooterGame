@@ -86,3 +86,6 @@ Assets/
   - Click `Build and Run`
  
 ## Game Screenshots
+<img src="screenshots/1.png" alt="Menu" width="600">
+<img src="screenshots/2.png" alt="Settings" width="600">
+<img src="screenshots/3.png" alt="Level1" width="600">
