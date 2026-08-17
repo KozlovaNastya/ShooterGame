@@ -7,6 +7,7 @@ public class SimpleEnemySpawner : MonoBehaviour
     public GameObject enemyPrefab;
     public float spawnRate = 2f; 
     public int maxEnemies = 5;
+    public int countOfEnemies = 10;
 
     [Header("Spawn Zone")]
     public float minX, maxX;
@@ -16,6 +17,7 @@ public class SimpleEnemySpawner : MonoBehaviour
     public float safeDistance = 3f;
 
     private Transform player;
+    private int spawnEnemies = 0;
 
     void Start()
     {
@@ -37,9 +39,10 @@ public class SimpleEnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(spawnRate);
 
             // Проверяем количество врагов
-            if (GameObject.FindGameObjectsWithTag("Enemy").Length < maxEnemies)
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length < maxEnemies && spawnEnemies <= countOfEnemies)
             {
                 SpawnEnemy();
+                spawnEnemies++;
             }
         }
     }
