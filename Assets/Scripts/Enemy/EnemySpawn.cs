@@ -10,28 +10,38 @@ public class SimpleEnemySpawner : MonoBehaviour
     public int countOfEnemies = 10;
 
     [Header("Spawn Zone")]
+    public bool autoDetectedBound = true;
     public float minX, maxX;
     public float minY, maxY;
 
-    [Header("Safe Zone")]
-    public float safeDistance = 3f;
-
-    private Transform player;
     private int spawnEnemies = 0;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
-        // Находим игрока
-        GameObject playerObj = GameObject.FindWithTag("Player");
-        if (playerObj != null)
+
+        if (autoDetectedBound)
         {
-            player = playerObj.transform;
+            AutoDetectBounds();
         }
 
         // Запускаем спавн
         StartCoroutine(SpawnLoop());
     }
 
+    void AutoDetectBounds()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null && spriteRenderer.sprite != null)
+        {
+            Bounds bounds = spriteRenderer.bounds;
+
+            minX = bounds.min.x;
+            maxX = bounds.max.x;
+            minY = bounds.min.y;
+            maxY = bounds.max.y;
+        }
+    }
     IEnumerator SpawnLoop()
     {
         while (true)
@@ -44,6 +54,10 @@ public class SimpleEnemySpawner : MonoBehaviour
                 SpawnEnemy();
                 spawnEnemies++;
             }
+            else if(spawnEnemies >= countOfEnemies)
+            {
+                yield break;
+            }
         }
     }
 
@@ -55,31 +69,10 @@ public class SimpleEnemySpawner : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos;
-        int attempts = 0;
-
-        do
-        {
-            float randomX = Random.Range(minX, maxX);
-            float randomY = Random.Range(minY, maxY);
-            spawnPos = new Vector3(randomX, randomY, 0);
-            attempts++;
-
-        } while (Vector3.Distance(spawnPos, player.position) < safeDistance && attempts < 10);
-
-        if (attempts < 10 || player == null)
-        {
-            Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-        }
-    }
-
-    void OnDrawGizmos()
-    {
-        if (player != null)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(player.position, safeDistance);
-        }
+        float randomX = Random.Range(minX, maxX);
+        float randomY = Random.Range(minY, maxY);
+        Vector3 spawnPos = new Vector3(randomX, randomY, 0);
+        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
     }
 
 }
